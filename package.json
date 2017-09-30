@@ -1,19 +1,21 @@
 {
   "name": "respect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JSON-RPC 2.0 server over WebSockets",
   "main": "index.js",
   "scripts": {
     "test": "tape ./test/*.js",
     "coverage": "nyc tape test/index.js | tap-spec"
   },
-  "keywords": ["json-rpc", "websocket"],
+  "keywords": [
+    "json-rpc",
+    "websocket"
+  ],
   "author": "Miles Hingston <miles@bitshift.cc>",
   "license": "MIT",
   "dependencies": {
     "ajv": "^5.2.3",
     "function-arguments": "^1.0.8",
-    "is-plain-object": "^2.0.4",
     "lodash": "^4.17.4",
     "uws": "^8.14.1"
   },

@@ -87,7 +87,7 @@ const rpc = new Respect(config);
 
 ## Notes
 
-* Support JSON-RPC 2.0 **only**.
+* Supports JSON-RPC 2.0 **only**.
 * Calls to methods without named parameters must have the same number of arguments as the method signature.
 * Supports async methods, i.e. returning a promise. Callbacks are not supported as functions don't "JSONify".
 * Check out the [tests](https://github.com/mhingston/respect/blob/master/test/index.js) for more examples.

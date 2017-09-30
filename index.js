@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const isPlainObject = require('is-plain-object');
 const functionArguments = require('function-arguments');
 const Ajv = require('ajv');
 const WebSocketServer = require('uws').Server;
@@ -98,7 +97,7 @@ class Respect
 
         if(!json.params)
         {
-            if(isPlainObject(schema))
+            if(_.isPlainObject(schema))
             {
                 return {
                     jsonrpc: this.VERSION,
@@ -123,7 +122,7 @@ class Respect
                         result = await result;
                     }
 
-                    if(!['string', 'number', 'boolean'].includes(typeof result) && result !== null && !Array.isArray(result) && !isPlainObject(result))
+                    if(!['string', 'number', 'boolean'].includes(typeof result) && result !== null && !Array.isArray(result) && !_.isPlainObject(result))
                     {
                         throw new Error(`Method: ${json.method} returned an invalid value. Expected [String|Number|Boolean|Null|Array|Object].`);
                     }
@@ -154,9 +153,9 @@ class Respect
             }
         }
 
-        if(isPlainObject(json.params))
+        if(_.isPlainObject(json.params))
         {
-            if(isPlainObject(schema))
+            if(_.isPlainObject(schema))
             {
                 const ajv = new Ajv();
                 const isValid = ajv.validate(schema, json.params);
@@ -188,7 +187,7 @@ class Respect
                     result = await result;
                 }
 
-                if(!['string', 'number', 'boolean'].includes(typeof result) && result !== null && !Array.isArray(result) && !isPlainObject(result))
+                if(!['string', 'number', 'boolean'].includes(typeof result) && result !== null && !Array.isArray(result) && !_.isPlainObject(result))
                 {
                     throw new Error(`Method: ${json.method} returned an invalid value. Expected [String|Number|Boolean|Null|Array|Object].`);
                 }
@@ -248,7 +247,7 @@ class Respect
                     result = await result;
                 }
 
-                if(!['string', 'number', 'boolean'].includes(typeof result) && result !== null && !Array.isArray(result) && !isPlainObject(result))
+                if(!['string', 'number', 'boolean'].includes(typeof result) && result !== null && !Array.isArray(result) && !_.isPlainObject(result))
                 {
                     throw new Error(`Method: ${json.method} returned an invalid value. Expected [String|Number|Boolean|Null|Array|Object].`);
                 }
