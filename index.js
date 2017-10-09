@@ -87,8 +87,6 @@ class Respect
         const method = _.get(this.instance, json.method);
         const schema = _.get(this.instance.schema, json.method);
 
-        logger.log('info', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Call method: ${method.name}`);
-
         if(typeof method !== 'function')
         {
             logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Method not found`);
@@ -103,6 +101,8 @@ class Respect
                 id
             };
         }
+
+        logger.log('info', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Call method: ${method.name}`);
 
         if(!json.params)
         {

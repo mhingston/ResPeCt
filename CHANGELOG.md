@@ -1,3 +1,7 @@
+## [1.0.3] - 2017-10-09
+### Fixed
+- Logging statement
+
 ## [1.0.2] - 2017-10-09
 ### Added
 - Logging statements to enable fail2ban rules to be applied
