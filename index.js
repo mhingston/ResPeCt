@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const {format} = require('date-fns');
 const functionArguments = require('function-arguments');
 const Ajv = require('ajv');
 const WebSocketServer = require('uws').Server;
@@ -28,7 +29,7 @@ class Respect
         this.wss = new WebSocketServer(config.uwsOptions);
         this.wss.on('connection', (ws) =>
         {
-            logger.log('info', 'Connection established.');
+            logger.log('info', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Connection established`);
             ws.on('message', (message) => this.handleMessage(message, ws));
         });
     }
@@ -44,13 +45,15 @@ class Respect
         }
     }
 
-    async handleCall(json)
+    async handleCall(json, ws)
     {
         let result;
         const id = (typeof json.id === "string" || typeof json.id === "number" || json.id === null) ? json.id : undefined;
         
         if(json.jsonrpc !== this.VERSION)
         {
+            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid request`);
+
             return {
                 jsonrpc: this.VERSION,
                 error:
@@ -68,6 +71,8 @@ class Respect
 
         if(!json.method || typeof json.method !== 'string')
         {
+            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid request`);
+
             return {
                 jsonrpc: this.VERSION,
                 error:
@@ -82,8 +87,12 @@ class Respect
         const method = _.get(this.instance, json.method);
         const schema = _.get(this.instance.schema, json.method);
 
+        logger.log('info', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Call method: ${method.name}`);
+
         if(typeof method !== 'function')
         {
+            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Method not found`);
+
             return {
                 jsonrpc: this.VERSION,
                 error:
@@ -99,6 +108,8 @@ class Respect
         {
             if(_.isPlainObject(schema))
             {
+                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
+                
                 return {
                     jsonrpc: this.VERSION,
                     error:
@@ -130,6 +141,8 @@ class Respect
 
                 catch(error)
                 {
+                    logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
+
                     return {
                         jsonrpc: this.VERSION,
                         error:
@@ -162,6 +175,8 @@ class Respect
     
                 if(!isValid)
                 {
+                    logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
+
                     return {
                         jsonrpc: this.VERSION,
                         error:
@@ -195,6 +210,8 @@ class Respect
 
             catch(error)
             {
+                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
+
                 return {
                     jsonrpc: this.VERSION,
                     error:
@@ -223,6 +240,8 @@ class Respect
 
             if(args.length !== json.params.length)
             {
+                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
+
                 return {
                     jsonrpc: this.VERSION,
                     error:
@@ -255,6 +274,8 @@ class Respect
 
             catch(error)
             {
+                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
+
                 return {
                     jsonrpc: this.VERSION,
                     error:
@@ -289,6 +310,8 @@ class Respect
 
         catch(error)
         {
+            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Parse error`);
+
             return ws.send(JSON.stringify(
             {
                 jsonrpc: this.VERSION,
@@ -307,7 +330,7 @@ class Respect
 
         if(!Array.isArray(json))
         {
-            const response = await this.handleCall(json);
+            const response = await this.handleCall(json, ws);
 
             if(response.id !== undefined)
             {
@@ -317,7 +340,7 @@ class Respect
 
         else
         {
-            const items = _.map(json, (item) => this.handleCall(item));
+            const items = _.map(json, (item) => this.handleCall(item, ws));
             let batch = await Promise.all(items);
             batch = _.filter(batch, (response) => response.id !== undefined);
             

@@ -1,6 +1,6 @@
 {
   "name": "respect",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "JSON-RPC 2.0 server over WebSockets",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "ajv": "^5.2.3",
+    "date-fns": "^1.28.5",
     "function-arguments": "^1.0.8",
     "lodash": "^4.17.4",
     "uws": "^8.14.1"
