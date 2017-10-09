@@ -151,6 +151,13 @@ class Respect
                             message: `Internal error: ${error.message}`,
                             data:
                             {
+                                columnNumber: error.columnNumber,
+                                description: error.description,
+                                fileName: error.fileName,
+                                lineNumber: error.lineNumber,
+                                message: error.message,
+                                name: error.name,
+                                number: error.number,
                                 stack: error.stack
                             }
                         },
@@ -220,6 +227,13 @@ class Respect
                         message: `Internal error: ${error.message}`,
                         data:
                         {
+                            columnNumber: error.columnNumber,
+                            description: error.description,
+                            fileName: error.fileName,
+                            lineNumber: error.lineNumber,
+                            message: error.message,
+                            name: error.name,
+                            number: error.number,
                             stack: error.stack
                         }
                     },
@@ -284,6 +298,13 @@ class Respect
                         message: `Internal error: ${error.message}`,
                         data:
                         {
+                            columnNumber: error.columnNumber,
+                            description: error.description,
+                            fileName: error.fileName,
+                            lineNumber: error.lineNumber,
+                            message: error.message,
+                            name: error.name,
+                            number: error.number,
                             stack: error.stack
                         }
                     },
