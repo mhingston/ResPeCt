@@ -76,7 +76,7 @@ const config =
 }
 ```
 * `instance` {Object} Object containing the methods exposed to the RPC server.
-* `log` {Boolean|Function} Set to true to have debug log written to the console or pass a function to receive the log messages. Default = `false`.
+* `logger` {Boolean|Function} Set to true to have debug log written to the console or pass a function to receive the log messages. Default = `false`.
 * `uwsOptions` {Object} Options passed to [µWS](https://github.com/uNetworking/uWebSockets).
 
 
