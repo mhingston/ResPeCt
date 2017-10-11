@@ -2,7 +2,7 @@
 
 [JSON-RPC](http://www.jsonrpc.org/specification) 2.0 server over WebSockets.
 
-For a JSON-RPC 2.0 server check out [CyPRus](https://github.com/mhingston/cyprus).
+For a JSON-RPC 2.0 client check out [CyPRus](https://github.com/mhingston/cyprus).
 
 ## Installation
 
