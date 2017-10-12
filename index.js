@@ -151,14 +151,14 @@ class Respect
                             message: `Internal error: ${error.message}`,
                             data:
                             {
-                                columnNumber: error.columnNumber,
-                                description: error.description,
-                                fileName: error.fileName,
-                                lineNumber: error.lineNumber,
+                                columnNumber: process.env.NODE_ENV === 'production' ?  undefined : error.columnNumber,
+                                description: process.env.NODE_ENV === 'production' ?  undefined : error.description,
+                                fileName: process.env.NODE_ENV === 'production' ?  undefined : error.fileName,
+                                lineNumber: process.env.NODE_ENV === 'production' ?  undefined : error.lineNumber,
                                 message: error.message,
                                 name: error.name,
                                 number: error.number,
-                                stack: error.stack
+                                stack: process.env.NODE_ENV === 'production' ?  undefined : error.stack
                             }
                         },
                         id
@@ -227,14 +227,14 @@ class Respect
                         message: `Internal error: ${error.message}`,
                         data:
                         {
-                            columnNumber: error.columnNumber,
-                            description: error.description,
-                            fileName: error.fileName,
-                            lineNumber: error.lineNumber,
+                            columnNumber: process.env.NODE_ENV === 'production' ?  undefined : error.columnNumber,
+                            description: process.env.NODE_ENV === 'production' ?  undefined : error.description,
+                            fileName: process.env.NODE_ENV === 'production' ?  undefined : error.fileName,
+                            lineNumber: process.env.NODE_ENV === 'production' ?  undefined : error.lineNumber,
                             message: error.message,
                             name: error.name,
                             number: error.number,
-                            stack: error.stack
+                            stack: process.env.NODE_ENV === 'production' ?  undefined : error.stack
                         }
                     },
                     id
@@ -298,14 +298,14 @@ class Respect
                         message: `Internal error: ${error.message}`,
                         data:
                         {
-                            columnNumber: error.columnNumber,
-                            description: error.description,
-                            fileName: error.fileName,
-                            lineNumber: error.lineNumber,
+                            columnNumber: process.env.NODE_ENV === 'production' ?  undefined : error.columnNumber,
+                            description: process.env.NODE_ENV === 'production' ?  undefined : error.description,
+                            fileName: process.env.NODE_ENV === 'production' ?  undefined : error.fileName,
+                            lineNumber: process.env.NODE_ENV === 'production' ?  undefined : error.lineNumber,
                             message: error.message,
                             name: error.name,
                             number: error.number,
-                            stack: error.stack
+                            stack: process.env.NODE_ENV === 'production' ?  undefined : error.stack
                         }
                     },
                     id
@@ -342,7 +342,7 @@ class Respect
                     message: 'Unable to parse JSON',
                     data:
                     {
-                        stack: error.stack
+                        stack: process.env.NODE_ENV === 'production' ?  undefined : error.stack
                     }
                 },
                 id: null
