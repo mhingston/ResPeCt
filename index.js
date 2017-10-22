@@ -3,13 +3,18 @@ const {format} = require('date-fns');
 const functionArguments = require('function-arguments');
 const Ajv = require('ajv');
 const WebSocketServer = require('uws').Server;
-const logger = {};
+let logger = {};
 
 class Respect
 {
     constructor(config)
     {
-        if(typeof config.logger === 'function')
+        if(config.logger && typeof config.logger.log === 'function')
+        {
+            logger = config.logger;
+        }
+
+        else if(typeof config.logger === 'function')
         {
             logger.log = config.logger;
         }
