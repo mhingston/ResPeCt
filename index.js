@@ -34,7 +34,8 @@ class Respect
         this.wss = new WebSocketServer(config.uwsOptions);
         this.wss.on('connection', (ws) =>
         {
-            logger.log('info', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Connection established`);
+            ws.remoteAddress = ws.upgradeReq.headers['x-forwarded-for'] || ws._socket.remoteAddress.replace(/^::ffff:/, '');
+            logger.log('info', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Connection established`);
             ws.on('message', (message) => this.handleMessage(message, ws));
         });
     }
@@ -57,7 +58,7 @@ class Respect
         
         if(json.jsonrpc !== this.VERSION)
         {
-            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid request`);
+            logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid request`);
 
             return {
                 jsonrpc: this.VERSION,
@@ -76,7 +77,7 @@ class Respect
 
         if(!json.method || typeof json.method !== 'string')
         {
-            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid request`);
+            logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid request`);
 
             return {
                 jsonrpc: this.VERSION,
@@ -94,7 +95,7 @@ class Respect
 
         if(typeof method !== 'function')
         {
-            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Method not found`);
+            logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Method not found`);
 
             return {
                 jsonrpc: this.VERSION,
@@ -107,13 +108,13 @@ class Respect
             };
         }
 
-        logger.log('info', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Call method: ${method.name}`);
+        logger.log('info', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Call method: ${method.name}`);
 
         if(!json.params)
         {
             if(_.isPlainObject(schema))
             {
-                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
+                logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
                 
                 return {
                     jsonrpc: this.VERSION,
@@ -146,7 +147,7 @@ class Respect
 
                 catch(error)
                 {
-                    logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
+                    logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
 
                     return {
                         jsonrpc: this.VERSION,
@@ -187,7 +188,7 @@ class Respect
     
                 if(!isValid)
                 {
-                    logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
+                    logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
 
                     return {
                         jsonrpc: this.VERSION,
@@ -222,7 +223,7 @@ class Respect
 
             catch(error)
             {
-                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
+                logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
 
                 return {
                     jsonrpc: this.VERSION,
@@ -259,7 +260,7 @@ class Respect
 
             if(args.length !== json.params.length)
             {
-                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
+                logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Invalid params`);
 
                 return {
                     jsonrpc: this.VERSION,
@@ -293,7 +294,7 @@ class Respect
 
             catch(error)
             {
-                logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
+                logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Internal error`);
 
                 return {
                     jsonrpc: this.VERSION,
@@ -336,7 +337,7 @@ class Respect
 
         catch(error)
         {
-            logger.log('error', `${ws._socket.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Parse error`);
+            logger.log('error', `${ws.remoteAddress} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Parse error`);
 
             return ws.send(JSON.stringify(
             {
