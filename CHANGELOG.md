@@ -1,4 +1,7 @@
-## [1.0.3] - 2017-10-09
+## [1.0.4] - 2017-10-31
+### Added
+- Expose upgrade request headers to methods
+
 ### Fixed
 - Logging statement
 

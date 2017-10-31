@@ -92,4 +92,5 @@ const rpc = new Respect(config);
 * Supports JSON-RPC 2.0 **only**.
 * Calls to methods without named parameters must have the same number of arguments as the method signature.
 * Supports async methods, i.e. returning a promise. Callbacks are not supported as functions don't "JSONify".
+* You can access the client headers sent with the upgrade request from within a method by accessing the property `<methodName>._requestHeaders` or `this._requestHeaders` depending on whether your method has a lexical `this`.
 * Check out the [tests](https://github.com/mhingston/respect/blob/master/test/index.js) for more examples.
