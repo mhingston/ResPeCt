@@ -2,7 +2,7 @@ const _ = require('lodash');
 const {format} = require('date-fns');
 const functionArguments = require('function-arguments');
 const Ajv = require('ajv');
-const WebSocketServer = require('uws').Server;
+const WebSocketServer = require('ws').Server;
 let logger = {};
 
 class Respect
@@ -32,11 +32,11 @@ class Respect
         this.VERSION = '2.0';
         this.instance = config.instance;
         this.wss = new WebSocketServer(config.uwsOptions);
-        this.wss.on('connection', (ws) =>
+        this.wss.on('connection', (ws, req) =>
         {
             ws.isAlive = true;
-            ws.headers = ws.upgradeReq.headers;
-            ws.headers['x-forwarded-for'] = ws.headers['x-forwarded-for'] || ws._socket.remoteAddress.replace(/^::ffff:/, '');
+            ws.headers = req.headers;
+            ws.headers['x-forwarded-for'] = req.connection.remoteAddress.replace(/^::ffff:/, '');
             logger.log('info', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Connection established`);
             ws.on('message', (message) => this.handleMessage(message, ws));
             ws.on('error', (error) => this.handleError(error, ws));

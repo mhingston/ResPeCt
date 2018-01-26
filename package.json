@@ -14,16 +14,19 @@
   "author": "Miles Hingston <miles@bitshift.cc>",
   "license": "MIT",
   "dependencies": {
-    "ajv": "^5.2.3",
+    "ajv": "^6.0.1",
     "date-fns": "^1.28.5",
     "function-arguments": "^1.0.8",
     "lodash": "^4.17.4",
-    "uws": "^8.14.1"
+    "ws": "^4.0.0"
   },
   "devDependencies": {
     "nyc": "^11.2.1",
     "tap-spec": "^4.1.1",
-    "tape": "^4.8.0",
-    "ws": "^3.2.0"
+    "tape": "^4.8.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^3.0.3",
+    "utf-8-validate": "^4.0.0"
   }
 }

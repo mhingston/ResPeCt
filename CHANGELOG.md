@@ -1,3 +1,9 @@
+## [1.0.5] - 2018-01-26
+### Added
+- Heartbeat
+### Changed
+- Replace `uws` with `ws` as it has better stability and documentation
+
 ## [1.0.4] - 2017-10-31
 ### Added
 - Expose upgrade request headers to methods
