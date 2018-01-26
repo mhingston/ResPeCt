@@ -34,11 +34,29 @@ class Respect
         this.wss = new WebSocketServer(config.uwsOptions);
         this.wss.on('connection', (ws) =>
         {
+            ws.isAlive = true;
             ws.headers = ws.upgradeReq.headers;
             ws.headers['x-forwarded-for'] = ws.headers['x-forwarded-for'] || ws._socket.remoteAddress.replace(/^::ffff:/, '');
             logger.log('info', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Connection established`);
             ws.on('message', (message) => this.handleMessage(message, ws));
+            ws.on('error', (error) => this.handleError(error, ws));
+            ws.on('close', (code) => this.handleClose(close, ws));
+            ws.on('pong', () => ws.isAlive = true);
         });
+
+        this.timer = setInterval(() =>
+        {
+            this.wss.clients.forEach((ws) =>
+            {
+                if(ws.isAlive === false)
+                {
+                    return ws.terminate();
+                }
+          
+                ws.isAlive = false;
+                ws.ping(() => {});
+            });
+        }, 30000);
     }
 
     get status()
@@ -327,6 +345,16 @@ class Respect
                 id
             };
         }
+    }
+
+    handleError(error, ws)
+    {
+        logger.log('error', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Error: ${error.message}`);
+    }
+
+    handleClose(code, ws)
+    {
+        logger.log('info', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Coonection closed (${code})`);
     }
 
     async handleMessage(message, ws)
