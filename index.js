@@ -31,7 +31,7 @@ class Respect
 
         this.VERSION = '2.0';
         this.instance = config.instance;
-        this.wss = new WebSocketServer(config.uwsOptions);
+        this.wss = new WebSocketServer(config.wsOptions);
         this.wss.on('connection', (ws, req) =>
         {
             ws.isAlive = true;

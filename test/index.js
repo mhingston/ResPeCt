@@ -61,7 +61,7 @@ const config1 =
 {
     instance: singleton,
     logger: true,
-    uwsOptions:
+    wsOptions:
     {
         port: 33332
     }
@@ -71,7 +71,7 @@ const config2 =
 {
     instance: new Instance(),
     logger: true,
-    uwsOptions:
+    wsOptions:
     {
         port: 33333
     }
@@ -79,8 +79,8 @@ const config2 =
 
 const rpc1 = new Respect(config1);
 const rpc2 = new Respect(config2);
-const ws1 = new WebSocket(`ws://127.0.0.1:${config1.uwsOptions.port}`);
-const ws2 = new WebSocket(`ws://127.0.0.1:${config2.uwsOptions.port}`);
+const ws1 = new WebSocket(`ws://127.0.0.1:${config1.wsOptions.port}`);
+const ws2 = new WebSocket(`ws://127.0.0.1:${config2.wsOptions.port}`);
 
 ws1.on('open', () =>
 {
@@ -462,7 +462,6 @@ ws1.on('open', () =>
             const json = JSON.parse(message);
             t.equal(rpc1.status.INVALID_PARAMS, _.get(json, 'error.code'));
             t.end();
-            process.exit();
         });
 
         ws1.send(JSON.stringify(
@@ -484,6 +483,7 @@ ws2.on('open', () =>
             const json = JSON.parse(message);
             t.notEqual(json.result, undefined);
             t.end();
+            process.exit();
         });
 
         ws2.send(JSON.stringify(

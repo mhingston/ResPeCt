@@ -1,3 +1,7 @@
+## [2.0.0] - 2018-01-26
+### Changes
+- Breaking change config `uwsOptions` renamed to `wsOptions`
+
 ## [1.0.5] - 2018-01-26
 ### Added
 - Heartbeat

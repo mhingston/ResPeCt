@@ -1,6 +1,6 @@
 {
   "name": "respect",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "JSON-RPC 2.0 server over WebSockets",
   "main": "index.js",
   "scripts": {

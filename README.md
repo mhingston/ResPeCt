@@ -71,7 +71,7 @@ const config =
 {
     instance: methods,
     logger: true,
-    uwsOptions:
+    wsOptions:
     {
         port: 33333
     }
@@ -79,7 +79,7 @@ const config =
 ```
 * `instance` {Object} Object containing the methods exposed to the RPC server.
 * `logger` {Boolean|Function} Set to true to have debug log written to the console or pass a function to receive the log messages. Default = `false`.
-* `uwsOptions` {Object} Options passed to [µWS](https://github.com/uNetworking/uWebSockets).
+* `wsOptions` {Object} Options passed to [ws](https://github.com/websockets/ws/blob/master/doc/ws.md#new-websocketserveroptions-callback).
 
 
 Instantiate a new RPC server
