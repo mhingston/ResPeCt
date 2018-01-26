@@ -40,7 +40,7 @@ class Respect
             logger.log('info', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Connection established`);
             ws.on('message', (message) => this.handleMessage(message, ws));
             ws.on('error', (error) => this.handleError(error, ws));
-            ws.on('close', (code) => this.handleClose(close, ws));
+            ws.on('close', (code) => this.handleClose(code, ws));
             ws.on('pong', () => ws.isAlive = true);
         });
 
