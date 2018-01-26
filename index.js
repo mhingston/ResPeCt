@@ -354,7 +354,7 @@ class Respect
 
     handleClose(code, ws)
     {
-        logger.log('info', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Coonection closed (${code})`);
+        logger.log('debug', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Coonection closed (${code})`);
     }
 
     async handleMessage(message, ws)
