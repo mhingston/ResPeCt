@@ -35,8 +35,9 @@ class Respect
         this.wss.on('connection', (ws, req) =>
         {
             ws.isAlive = true;
+            req.headers['x-forwarded-for'] = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            req.headers['x-forwarded-for'] = req.headers['x-forwarded-for'].replace(/^::ffff:/, '');
             ws.headers = req.headers;
-            ws.headers['x-forwarded-for'] = req.connection.remoteAddress.replace(/^::ffff:/, '');
             logger.log('info', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Connection established`);
             ws.on('message', (message) => this.handleMessage(message, ws));
             ws.on('error', (error) => this.handleError(error, ws));

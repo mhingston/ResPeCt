@@ -1,3 +1,7 @@
+## [2.0.1] - 2018-01-27
+### Changes
+- Fix for IP address
+
 ## [2.0.0] - 2018-01-26
 ### Changes
 - Breaking change config `uwsOptions` renamed to `wsOptions`
