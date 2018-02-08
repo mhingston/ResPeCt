@@ -110,7 +110,7 @@ class Respect
             };
         }
 
-        const method = _.get(this.instance, json.method);
+        let method = _.get(this.instance, json.method);
         const schema = _.get(this.instance.schema, json.method);
 
         if(typeof method !== 'function')
@@ -128,6 +128,7 @@ class Respect
             };
         }
 
+        method = method.bind(null);
         method._requestHeaders = ws.headers;
 
         logger.log('info', `${ws.headers['x-forwarded-for']} - - [${format(new Date(), 'DD/MMM/YYYY HH:mm:ss ZZ')}] Call method: ${method.name}`);
